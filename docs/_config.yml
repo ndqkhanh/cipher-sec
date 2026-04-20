@@ -1,0 +1,4 @@
+theme: jekyll-theme-cayman
+title: Cipher-Sec
+description: "Defensive / offensive security agent with cryptographic scope authorization, deny-engine, HITL gates, and safety monitor."
+show_downloads: false

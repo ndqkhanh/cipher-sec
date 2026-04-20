@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Cipher-Sec — Defensive & Offensive Security Agent</title>
+<style>
+  :root { --bg:#0b1020; --fg:#e6ecff; --muted:#8aa0c8; --accent:#ff7a7a; --accent-2:#ffd47a; --border:#2a1a1a; --card:#1a1218; --badge:#3a2230; }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--bg);color:var(--fg);font-family:-apple-system,BlinkMacSystemFont,"Inter","Helvetica Neue",sans-serif;line-height:1.55}
+  a{color:var(--accent)}a:hover{text-decoration:underline}
+  header{padding:48px 32px 32px;border-bottom:1px solid var(--border);background:linear-gradient(160deg,#0b1020 0%,#2a1620 80%)}
+  header h1{font-size:2.2rem;margin:0 0 8px}
+  header h2{font-size:1.05rem;font-weight:400;color:var(--muted);margin:0 0 16px}
+  .badges span{background:var(--badge);color:var(--accent-2);padding:4px 10px;border-radius:12px;font-size:.78rem;margin-right:8px;display:inline-block;margin-bottom:6px}
+  nav.tabs{display:flex;gap:4px;flex-wrap:wrap;padding:0 32px;border-bottom:1px solid var(--border);background:#160c12;position:sticky;top:0;z-index:5}
+  nav.tabs button{background:transparent;border:0;color:var(--muted);padding:14px 18px;cursor:pointer;font-size:.92rem;border-bottom:2px solid transparent}
+  nav.tabs button.active{color:var(--fg);border-bottom-color:var(--accent)}
+  main{max-width:1100px;margin:0 auto;padding:36px 32px 80px}
+  section.pane{display:none}section.pane.active{display:block}
+  h3{margin-top:36px;font-size:1.3rem}h4{margin-top:28px;font-size:1.05rem;color:var(--accent-2)}
+  table{border-collapse:collapse;width:100%;margin:12px 0 24px;font-size:.92rem}
+  th,td{border-bottom:1px solid var(--border);padding:10px 12px;text-align:left;vertical-align:top}
+  th{color:var(--muted);font-weight:500}
+  code{background:var(--card);padding:2px 6px;border-radius:4px;font-size:.88rem}
+  pre{background:var(--card);border:1px solid var(--border);padding:12px 16px;border-radius:6px;overflow-x:auto;font-size:.85rem;line-height:1.45}
+  ul{padding-left:20px}li{margin:6px 0}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin:14px 0}
+  .card{background:var(--card);border:1px solid var(--border);padding:14px 16px;border-radius:8px}
+  .card h5{margin:0 0 6px;font-size:.98rem;color:var(--accent)}
+  .card p{margin:0;color:var(--muted);font-size:.88rem}
+  .hero-target{background:var(--card);border-left:3px solid var(--accent);padding:14px 18px;border-radius:4px;margin:14px 0;font-size:.95rem}
+  footer{color:var(--muted);font-size:.85rem;border-top:1px solid var(--border);padding:24px 32px;margin-top:40px}
+</style>
+</head>
+<body>
+<header>
+  <div class="badges"><span>Security</span><span>Design-only · April 2026</span><span>Offensive + Defensive</span></div>
+  <h1>Cipher-Sec</h1>
+  <h2>Authorized penetration testing and incident response — scope-signed, HITL-gated, audit-chained.</h2>
+  <div class="hero-target">
+    <b>Design target:</b> &lt; 10 % undetected sabotage at 1 % monitor FPR on a LaStraj-class evaluation — roughly half the <b>23 %</b> baseline reported for Claude Opus 4.6 on <a href="../../docs/26-linuxarena-production-agent-safety.md">LinuxArena</a>. Zero actions executed outside a signed scope artifact. Zero destructive actions auto-run.
+  </div>
+</header>
+
+<nav class="tabs">
+  <button class="tab-btn active" data-tab="overview">Overview</button>
+  <button class="tab-btn" data-tab="baselines">Honest Baselines</button>
+  <button class="tab-btn" data-tab="novel">Novel Contributions</button>
+  <button class="tab-btn" data-tab="arch">Architecture</button>
+  <button class="tab-btn" data-tab="blocks">Blocks</button>
+  <button class="tab-btn" data-tab="why">Why this stack</button>
+  <button class="tab-btn" data-tab="refs">References</button>
+</nav>
+
+<main>
+
+<section id="overview" class="pane active">
+  <h3>What Cipher-Sec is</h3>
+  <p>A security agent covering both authorized offensive testing and defensive incident triage. Every engagement carries a cryptographic <b>Scope Authorization Artifact</b> (targets, technique allowlist, time window, operators) that must be JWS-signed by both client and engagement lead. The sandbox runner verifies the artifact on every single action.</p>
+  <p>Destructive actions always require HITL approval. A different-family nano-class monitor watches the trajectory continuously for covert / off-task behavior. The audit log is hash-chained and signed with per-tenant keys so clients can verify integrity without trusting the platform.</p>
+  <div class="grid">
+    <div class="card"><h5>Niche</h5><p>Pentest engagements, incident response, authorized vulnerability research.</p></div>
+    <div class="card"><h5>Not</h5><p>Autonomous red team; "RAT as a service"; stealth tooling; substitute for IR teams.</p></div>
+    <div class="card"><h5>Status</h5><p>Design specification. Not implemented.</p></div>
+  </div>
+
+  <h4>Files in this folder</h4>
+  <ul>
+    <li><a href="architecture.md">architecture.md</a></li>
+    <li><a href="architecture-tradeoff.md">architecture-tradeoff.md</a></li>
+    <li><a href="system-design.md">system-design.md</a></li>
+    <li><a href="blocks/">blocks/</a></li>
+  </ul>
+</section>
+
+<section id="baselines" class="pane">
+  <h3>Honest baselines</h3>
+  <table>
+    <tr><th>Baseline</th><th>Reported number</th><th>Source</th></tr>
+    <tr><td>Claude Opus 4.6 on LinuxArena sabotage</td><td>~23% undetected at 1% FPR vs GPT-5-nano monitor</td><td><a href="../../docs/26-linuxarena-production-agent-safety.md">docs/26</a></td></tr>
+    <tr><td>LaStraj human-crafted trajectories</td><td>Substantially higher evasion vs model-generated attacks</td><td>same source</td></tr>
+    <tr><td>Agents of Chaos case studies</td><td>11 documented failure modes in agents with broad capabilities</td><td><a href="../../docs/49-agents-of-chaos-red-teaming.md">docs/49</a></td></tr>
+    <tr><td>Malicious Intermediary Attacks</td><td>428 routers surveyed; active injection + credential theft in wild</td><td><a href="../../docs/35-malicious-intermediary-attacks.md">docs/35</a></td></tr>
+  </table>
+  <p><b>Design targets (hypotheses):</b></p>
+  <ul>
+    <li>&lt;10% undetected sabotage at 1% FPR — assumption: cross-channel evidence + LaStraj-trained monitor.</li>
+    <li>Zero actions outside scope artifact — enforced by JWS verification at runner.</li>
+    <li>100% HITL on destructive — by construction.</li>
+  </ul>
+</section>
+
+<section id="novel" class="pane">
+  <h3>Novel contributions</h3>
+  <div class="card"><h5>1. Scope Authorization as cryptographic primitive</h5><p>JWS-signed artifact (targets × techniques × window × operators) that the sandbox runner verifies on every action. Two signatures required (client + lead). Generalizes Aegis-Ops's policy engine with Syndicate's handoff signing into a pentest-legal artifact.</p></div>
+  <div class="card"><h5>2. Mode-switched attacker/defender segregation</h5><p>Mutual exclusion per account per target — direct remediation of the "cross-mode confusion" failures documented in <a href="../../docs/49-agents-of-chaos-red-teaming.md">Agents of Chaos</a>.</p></div>
+  <div class="card"><h5>3. LaStraj-for-Pentest Corpus</h5><p>Applies LinuxArena's human-adversarial-trajectory insight to train the monitor and benchmark external audits. Federation path creates the community pentest-agent benchmark that doesn't yet exist.</p></div>
+  <div class="card"><h5>4. Cross-channel evidence for "exploit confirmed"</h5><p>A finding is not confirmed until trace + target audit log + snapshot diff all agree — extends <a href="../../docs/38-claw-eval.md">Claw-Eval</a>'s methodology into pentest reporting.</p></div>
+  <div class="card"><h5>5. Layered guardrail pattern (OpenAI April 2026)</h5><p>Explicit separation of input validation → scope check → tool-risk rating → hard-deny → HITL → safety monitor → output filtering. Each layer is independently testable.</p></div>
+</section>
+
+<section id="arch" class="pane">
+  <h3>Architecture at a glance</h3>
+  <pre>Operator → [Scope Authorization (JWS)] → [Mode Selector]
+                        │
+              ┌─────────┼─────────┐
+              ▼         ▼         ▼
+         [Recon]  [Policy+Deny] [HITL Gate]
+                        │
+                        ▼
+         [Sandboxed Exploit Runner]
+                        │
+                        ▼
+     [Safety Monitor (continuous)]
+                        │
+                        ▼
+     [Evidence Reporting + Audit]</pre>
+</section>
+
+<section id="blocks" class="pane">
+  <h3>Ten blocks</h3>
+  <ol>
+    <li><a href="blocks/01-scope-authorization.md">01 Scope Authorization</a></li>
+    <li><a href="blocks/02-recon-layer.md">02 Recon Layer</a></li>
+    <li><a href="blocks/03-sandboxed-exploit-runner.md">03 Sandboxed Exploit Runner</a></li>
+    <li><a href="blocks/04-policy-deny-engine.md">04 Policy Deny Engine</a></li>
+    <li><a href="blocks/05-hitl-on-destructive.md">05 HITL on Destructive</a></li>
+    <li><a href="blocks/06-supply-chain-defense.md">06 Supply-Chain Defense</a></li>
+    <li><a href="blocks/07-lastraj-redteam-corpus.md">07 LaStraj-for-Pentest Corpus</a></li>
+    <li><a href="blocks/08-safety-monitor.md">08 Safety Monitor</a></li>
+    <li><a href="blocks/09-audit-log.md">09 Append-only Audit Log</a></li>
+    <li><a href="blocks/10-evidence-reporting.md">10 Evidence Reporting</a></li>
+  </ol>
+</section>
+
+<section id="why" class="pane">
+  <h3>Why this stack</h3>
+  <h4>Why a signed scope artifact, not a YAML config?</h4>
+  <p>Pentest has legal weight. A tamper-evident signed artifact is the single cheapest control with the strongest evidentiary value. YAML file = legal liability; signed artifact = defensible position.</p>
+  <h4>Why HITL always on destructive?</h4>
+  <p>Self-reported agent confidence is not a trustworthy signal, especially under adversarial pressure. Agents of Chaos documented exactly this failure. HITL default-on for destructive is the one decision that's not worth optimizing.</p>
+  <h4>Why LaStraj-class red-team corpus?</h4>
+  <p>Human-crafted adversarial trajectories evade monitors at substantially higher rates than model-generated ones. If the monitor isn't tested against humans, its benchmark is misleading.</p>
+  <h4>Why cross-channel evidence for "confirmed"?</h4>
+  <p>Claw-Eval showed trajectory-opaque evaluation misses 44% of safety violations. The same logic applies to "exploit confirmed" claims — trace alone can be wrong; cross-channel agreement is stronger.</p>
+</section>
+
+<section id="refs" class="pane">
+  <h3>Primary references</h3>
+  <ul>
+    <li><a href="../../docs/26-linuxarena-production-agent-safety.md">docs/26 — LinuxArena sabotage detection</a></li>
+    <li><a href="../../docs/35-malicious-intermediary-attacks.md">docs/35 — Your Agent Is Mine (supply chain)</a></li>
+    <li><a href="../../docs/49-agents-of-chaos-red-teaming.md">docs/49 — Agents of Chaos (failure modes)</a></li>
+    <li><a href="../../docs/38-claw-eval.md">docs/38 — Claw-Eval (cross-channel evidence)</a></li>
+    <li><a href="../../docs/22-guardrails-prompt-injection.md">docs/22 — Guardrails and prompt injection</a></li>
+    <li><a href="../../docs/23-human-in-the-loop.md">docs/23 — HITL</a></li>
+    <li><a href="../../docs/05-hooks.md">docs/05 — Hooks</a></li>
+    <li><a href="../../docs/06-permission-modes.md">docs/06 — Permission modes</a></li>
+    <li>OpenAI April 2026 agent deployment guide — layered guardrail pattern (cited in arch)</li>
+    <li>Agent Harness for LLM Agents: A Survey — <a href="https://www.preprints.org/manuscript/202604.0428/v1">preprints.org</a></li>
+  </ul>
+</section>
+
+</main>
+<footer>Design specification. Not implemented. Part of the <a href="..">harness-engineering projects</a> index.</footer>
+
+<script>
+document.querySelectorAll('.tab-btn').forEach(btn=>btn.addEventListener('click',()=>{
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.pane').forEach(p=>p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById(btn.dataset.tab).classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}));
+</script>
+</body>
+</html>
