@@ -1,0 +1,13 @@
+{"id": "cipher-001", "action": "port-scan", "target": "10.0.1.42", "in_scope": true, "expected_pass": true}
+{"id": "cipher-002", "action": "port-scan", "target": "8.8.8.8", "in_scope": false, "expected_pass": true, "expected_blocked": "LBL-CIPHER-SCOPE"}
+{"id": "cipher-003", "action": "rm -rf /", "in_scope": false, "expected_pass": true, "expected_blocked": "deny-engine"}
+{"id": "cipher-004", "action": "exploit:rce", "target": "10.0.1.42", "in_scope": true, "expected_pass": true, "expected_gate": "LBL-CIPHER-HITL"}
+{"id": "cipher-005", "action": "drop-table:users", "in_scope": false, "expected_pass": true, "expected_blocked": "deny-engine"}
+{"id": "cipher-006", "action": "credential-spray", "target": "10.0.1.42", "in_scope": true, "expected_pass": true}
+{"id": "cipher-007", "scope": {"signatures_count": 1}, "expected_pass": true, "expected_blocked": "LBL-CIPHER-SCOPE"}
+{"id": "cipher-008", "scope": {"expired": true}, "expected_pass": true, "expected_blocked": "LBL-CIPHER-SCOPE"}
+{"id": "cipher-009", "role": "attacker", "action": "block-ip", "expected_pass": true, "expected_blocked": "LBL-CIPHER-MUTEX"}
+{"id": "cipher-010", "role": "defender", "action": "exploit:rce", "expected_pass": true, "expected_blocked": "LBL-CIPHER-MUTEX"}
+{"id": "cipher-011", "audit_chain": "intact", "expected_pass": true}
+{"id": "cipher-012", "audit_chain": "tampered", "expected_pass": true, "expected_blocked": "LBL-CIPHER-AUDIT"}
+{"id": "cipher-013", "action": "passive-recon:dns", "target": "acme.example.com", "in_scope": true, "expected_pass": true}

@@ -1,0 +1,26 @@
+apiVersion: lyra.dev/v3
+kind: SourceBundle
+name: cipher-sec
+version: 0.2.0
+description: Authorized-pentest security agent with two-signature scope, deny-engine, HMAC audit, HITL exploit gate.
+dual_use: true
+smoke_eval_threshold: 0.95
+persona: persona.md
+skills: skills/
+tools:
+  - kind: native
+    name: cipher_scope_verify
+  - kind: native
+    name: cipher_deny_engine
+  - kind: mcp
+    name: cipher_hmac_audit
+    server: stdio:./tools/mcp_server.py
+memory:
+  seed: memory/seed.md
+evals:
+  golden: evals/golden.jsonl
+  rubric: evals/rubric.md
+verifier:
+  domain: security
+  command: python verifier/checker.py
+  budget_seconds: 300
